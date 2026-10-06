@@ -1,0 +1,19 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: sankhya
+      POSTGRES_USER: sankhya
+      POSTGRES_PASSWORD: sankhya_dev
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+volumes:
+  pgdata:
