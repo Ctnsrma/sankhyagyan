@@ -3,7 +3,7 @@ from pathlib import Path
 
 from rest_framework import serializers
 
-from .models import Document
+from .models import Chunk, Document
 
 ALLOWED_EXTENSIONS = {".pdf"}
 MAX_FILE_SIZE = 25 * 1024 * 1024  # 25 MB
@@ -54,3 +54,8 @@ class DocumentSerializer(serializers.ModelSerializer):
         attrs["original_filename"] = file.name
         attrs["file_size"] = file.size
         return attrs
+
+class ChunkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Chunk
+        fields = ["id", "index", "section", "page_start", "page_end", "token_count", "text"]

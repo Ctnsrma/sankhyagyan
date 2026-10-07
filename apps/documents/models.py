@@ -42,3 +42,23 @@ class Document(models.Model):
 
     def __str__(self):
         return self.title
+
+class Chunk(models.Model):
+    document = models.ForeignKey(Document, on_delete=models.CASCADE, related_name="chunks")
+    index = models.PositiveIntegerField()
+    text = models.TextField()
+    section = models.CharField(max_length=500, blank=True)
+    page_start = models.PositiveIntegerField()
+    page_end = models.PositiveIntegerField()
+    token_count = models.PositiveIntegerField()
+    content_hash = models.CharField(max_length=64, db_index=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["document", "index"]
+        constraints = [
+            models.UniqueConstraint(fields=["document", "index"], name="unique_chunk_position")
+        ]
+
+    def __str__(self):
+        return f"{self.document.title} [chunk {self.index}]"
